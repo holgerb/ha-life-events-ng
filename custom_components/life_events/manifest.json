@@ -2,16 +2,16 @@
   "domain": "life_events",
   "name": "Life Events",
   "codeowners": [
-    "@calebgab"
+    "@holgerb"
   ],
   "config_flow": true,
   "dependencies": [
     "http",
     "lovelace"
   ],
-  "documentation": "https://github.com/calebgab/ha-life-events",
+  "documentation": "https://github.com/holgerb/ha-life-events-ng",
   "iot_class": "local_polling",
-  "issue_tracker": "https://github.com/calebgab/ha-life-events/issues",
+  "issue_tracker": "https://github.com/holgerb/ha-life-events-ng/issues",
   "requirements": [],
   "version": "2026.05.16.2"
 }

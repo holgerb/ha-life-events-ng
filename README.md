@@ -1,8 +1,8 @@
 # ![alt text](icon-small.png) Life Events for Home Assistant
 
 [![hacs_badge](https://img.shields.io/badge/HACS-Default-41BDF5.svg)](https://github.com/hacs/integration)
-[![GitHub release](https://img.shields.io/github/release/calebgab/ha-life-events.svg)](https://github.com/calebgab/ha-life-events/releases)
-[![License](https://img.shields.io/github/license/calebgab/ha-life-events)](LICENSE)
+[![GitHub release](https://img.shields.io/github/release/holgerb/ha-life-events-ng.svg)](https://github.com/holgerb/ha-life-events-ng/releases)
+[![License](https://img.shields.io/github/license/holgerb/ha-life-events-ng)](LICENSE)
 
 **The all-in-one birthday and anniversary integration for Home Assistant.**
 
@@ -119,7 +119,7 @@ show_types:
 
 Import the bundled blueprint to get notified on the day of an event (and/or days before):
 
-[![Import Blueprint](https://my.home-assistant.io/badges/blueprint_import.svg)](https://my.home-assistant.io/redirect/blueprint_import/?blueprint_url=https://raw.githubusercontent.com/calebgab/ha-life-events/main/blueprints/automation/life_events_notify.yaml)
+[![Import Blueprint](https://my.home-assistant.io/badges/blueprint_import.svg)](https://my.home-assistant.io/redirect/blueprint_import/?blueprint_url=https://raw.githubusercontent.com/holgerb/ha-life-events-ng/main/blueprints/automation/life_events_notify.yaml)
 
 Or manually copy `blueprints/automation/life_events_notify.yaml` to your HA blueprints folder.
 
@@ -179,7 +179,7 @@ The `calendar.life_events` entity is created automatically. Add it to your Calen
 
 ## 🤝 Contributing
 
-Issues and PRs welcome at [GitHub](https://github.com/calebgab/ha-life-events/issues).
+Issues and PRs welcome at [GitHub](https://github.com/holgerb/ha-life-events-ng/issues).
 
 ## 📄 License
 
