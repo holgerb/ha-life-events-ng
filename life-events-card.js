@@ -41,11 +41,18 @@ class LifeEventsCard extends HTMLElement {
   }
 
   setConfig(config) {
+    config = config || {};
+    const maxEvents = Number.parseInt(config.max_events, 10);
+    const showPastDays = Number.parseInt(config.show_past_days, 10);
+    const showTypes = Array.isArray(config.show_types)
+      ? config.show_types.filter((type) => Object.prototype.hasOwnProperty.call(EVENT_ICONS, type))
+      : ["birthday", "anniversary", "custom"];
+
     this._config = {
       title: config.title || "Life Events",
-      max_events: config.max_events || 10,
-      show_types: config.show_types || ["birthday", "anniversary", "custom"],
-      show_past_days: config.show_past_days || 0,
+      max_events: Number.isFinite(maxEvents) && maxEvents > 0 ? Math.min(maxEvents, 50) : 10,
+      show_types: showTypes.length ? showTypes : ["birthday", "anniversary", "custom"],
+      show_past_days: Number.isFinite(showPastDays) && showPastDays > 0 ? Math.min(showPastDays, 365) : 0,
     };
   }
 
@@ -112,14 +119,14 @@ class LifeEventsCard extends HTMLElement {
   _render() {
     const events = this._getEvents();
     const root = this.shadowRoot;
+    const title = this._escapeHtml(this._config.title);
+    const countLabel = `${events.length} event${events.length !== 1 ? "s" : ""}`;
 
     root.innerHTML = `
       <style>
-        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Serif+Display&display=swap');
-
         :host {
           display: block;
-          font-family: 'DM Sans', sans-serif;
+          font-family: var(--primary-font-family, Arial, sans-serif);
         }
 
         .card {
@@ -135,7 +142,7 @@ class LifeEventsCard extends HTMLElement {
         }
 
         .header-title {
-          font-family: 'DM Serif Display', serif;
+          font-family: var(--paper-font-headline_-_font-family, var(--primary-font-family, Arial, sans-serif));
           font-size: 1.2rem;
           color: var(--primary-text-color);
           letter-spacing: 0.01em;
@@ -263,8 +270,8 @@ class LifeEventsCard extends HTMLElement {
 
       <ha-card class="card">
         <div class="header">
-          <div class="header-title">${this._config.title}</div>
-          <div class="header-count">${events.length} event${events.length !== 1 ? "s" : ""}</div>
+          <div class="header-title">${title}</div>
+          <div class="header-count">${this._escapeHtml(countLabel)}</div>
         </div>
 
         ${
@@ -287,6 +294,8 @@ class LifeEventsCard extends HTMLElement {
     const emoji = EVENT_ICONS[ev.event_type] || "⭐";
     const yearsLabel = this._yearsLabel(ev);
     const dateFormatted = this._formatDate(ev.next_date);
+    const safeUrgencyLabel = this._escapeHtml(urgencyLabel);
+    const safeDateFormatted = this._escapeHtml(dateFormatted);
 
     let itemClass = "event-item";
     if (ev.days_until === 0) itemClass += " today";
@@ -307,8 +316,8 @@ class LifeEventsCard extends HTMLElement {
           </div>
         </div>
         <div class="event-right">
-          <div class="event-days" style="color: ${urgencyColor};">${urgencyLabel}</div>
-          ${dateFormatted ? `<div class="event-date">${dateFormatted}</div>` : ""}
+          <div class="event-days" style="color: ${urgencyColor};">${safeUrgencyLabel}</div>
+          ${safeDateFormatted ? `<div class="event-date">${safeDateFormatted}</div>` : ""}
         </div>
       </li>
     `;
@@ -358,6 +367,10 @@ class LifeEventsCardEditor extends HTMLElement {
 
   _render() {
     const c = this._config || {};
+    const title = LifeEventsCard.escapeHtml(c.title || "Life Events");
+    const maxEvents = Number.parseInt(c.max_events, 10);
+    const maxEventsValue = Number.isFinite(maxEvents) && maxEvents > 0 ? Math.min(maxEvents, 50) : 10;
+
     this.shadowRoot.innerHTML = `
       <style>
         .editor { padding: 16px; display: flex; flex-direction: column; gap: 12px; }
@@ -368,11 +381,11 @@ class LifeEventsCardEditor extends HTMLElement {
       <div class="editor">
         <div class="field">
           <label>Card title</label>
-          <input id="title" type="text" value="${c.title || "Life Events"}" />
+          <input id="title" type="text" value="${title}" />
         </div>
         <div class="field">
           <label>Max events to show</label>
-          <input id="max_events" type="number" min="1" max="50" value="${c.max_events || 10}" />
+          <input id="max_events" type="number" min="1" max="50" value="${maxEventsValue}" />
         </div>
       </div>
     `;
@@ -390,6 +403,14 @@ class LifeEventsCardEditor extends HTMLElement {
   }
 }
 
+LifeEventsCard.escapeHtml = function escapeHtml(str) {
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+};
+
 // ── Registration ───────────────────────────────────────────────────────────
 
 customElements.define("life-events-card", LifeEventsCard);
@@ -401,5 +422,5 @@ window.customCards.push({
   name: "Life Events Card",
   description: "Shows upcoming birthdays, anniversaries, and custom events from the Life Events integration.",
   preview: true,
-  documentationURL: "https://github.com/calebgab/ha-life-events",
+  documentationURL: "https://github.com/holgerb/ha-life-events-ng",
 });
