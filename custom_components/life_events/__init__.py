@@ -5,18 +5,44 @@ import logging
 from pathlib import Path
 from typing import Any
 
+import voluptuous as vol
+
 from homeassistant.components.http import StaticPathConfig
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import Platform
-from homeassistant.core import HomeAssistant
+from homeassistant.core import HomeAssistant, ServiceCall
+from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers.event import async_call_later
+import homeassistant.helpers.config_validation as cv
 
-from .const import DOMAIN, COORDINATOR
+from .const import (
+    DOMAIN,
+    COORDINATOR,
+    CONF_EVENTS,
+    CONF_EVENT_NAME,
+    CONF_EVENT_DATE,
+    CONF_EVENT_TYPE,
+    CONF_EVENT_CUSTOM_LABEL,
+    CONF_EVENT_ICON,
+    CONF_EVENT_YEAR_UNKNOWN,
+    EVENT_TYPES,
+    SERVICE_ADD_EVENT,
+)
 from .coordinator import LifeEventsCoordinator
+from .event import EventValidationError, build_event_data, event_names_match
 
 _LOGGER = logging.getLogger(__name__)
 
 PLATFORMS: list[Platform] = [Platform.SENSOR, Platform.CALENDAR]
+
+ADD_EVENT_SCHEMA = vol.Schema({
+    vol.Required(CONF_EVENT_NAME): cv.string,
+    vol.Required(CONF_EVENT_DATE): cv.string,
+    vol.Required(CONF_EVENT_TYPE): vol.In(EVENT_TYPES),
+    vol.Optional(CONF_EVENT_CUSTOM_LABEL, default=""): cv.string,
+    vol.Optional(CONF_EVENT_ICON, default=""): cv.string,
+    vol.Optional(CONF_EVENT_YEAR_UNKNOWN): cv.boolean,
+})
 
 _CARD_URL_BASE = "/life_events"
 _CARD_FILENAME = "life-events-card.js"
@@ -67,9 +93,47 @@ async def _register_card(hass: HomeAssistant) -> None:
 
 
 async def async_setup(hass: HomeAssistant, _config: dict) -> bool:
-    """Register the static path early, before config entries are loaded."""
+    """Register the static path, card resource, and integration services."""
     await _register_card(hass)
+    _register_services(hass)
     return True
+
+
+def _register_services(hass: HomeAssistant) -> None:
+    """Register Life Events services."""
+    if hass.services.has_service(DOMAIN, SERVICE_ADD_EVENT):
+        return
+
+    async def async_add_event(call: ServiceCall) -> None:
+        """Add a Life Events event to the configured entry."""
+        entries = hass.config_entries.async_entries(DOMAIN)
+        if not entries:
+            raise HomeAssistantError("Life Events is not configured")
+
+        entry = entries[0]
+        events = list(entry.options.get(CONF_EVENTS, entry.data.get(CONF_EVENTS, [])))
+
+        try:
+            event_data = build_event_data(dict(call.data))
+        except EventValidationError as err:
+            raise HomeAssistantError(str(err)) from err
+
+        event_name = event_data[CONF_EVENT_NAME]
+        if any(event_names_match(event.get(CONF_EVENT_NAME, ""), event_name) for event in events):
+            raise HomeAssistantError(f"Life Events event already exists: {event_name}")
+
+        options = dict(entry.options)
+        options[CONF_EVENTS] = [*events, event_data]
+        hass.config_entries.async_update_entry(entry, options=options)
+
+        _LOGGER.info("Added Life Events event via service: %s", event_name)
+
+    hass.services.async_register(
+        DOMAIN,
+        SERVICE_ADD_EVENT,
+        async_add_event,
+        schema=ADD_EVENT_SCHEMA,
+    )
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:

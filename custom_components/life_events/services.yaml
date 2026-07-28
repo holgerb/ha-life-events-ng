@@ -1,0 +1,48 @@
+add_event:
+  name: Add event
+  description: Add a birthday, anniversary, or custom recurring date to Life Events.
+  fields:
+    name:
+      name: Name
+      description: Person or event name. Event names must be unique.
+      required: true
+      example: Sarah
+      selector:
+        text:
+    date:
+      name: Date
+      description: Date in YYYY-MM-DD when the year is known, or MM-DD when the year is unknown.
+      required: true
+      example: "1990-03-15"
+      selector:
+        text:
+    type:
+      name: Event type
+      description: Type of event to add.
+      required: true
+      selector:
+        select:
+          options:
+            - birthday
+            - anniversary
+            - custom
+    custom_label:
+      name: Custom label
+      description: Label used when event type is custom.
+      required: false
+      example: Gotcha Day
+      selector:
+        text:
+    icon:
+      name: Icon
+      description: Optional MDI icon override.
+      required: false
+      example: mdi:cake-variant
+      selector:
+        icon:
+    year_unknown:
+      name: Year unknown
+      description: Use MM-DD format and hide age or anniversary year. If omitted, this is inferred from the date format.
+      required: false
+      selector:
+        boolean:

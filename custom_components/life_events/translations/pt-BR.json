@@ -35,7 +35,8 @@
       }
     },
     "error": {
-      "invalid_date": "Data inválida. Use AAAA-MM-DD (ex.: 1990-03-15) ou MM-DD (ex.: 03-15) se o ano for desconhecido."
+      "invalid_date": "Data inválida. Use AAAA-MM-DD (ex.: 1990-03-15) ou MM-DD (ex.: 03-15) se o ano for desconhecido.",
+      "invalid_event": "Invalid event. Name and event type are required."
     }
   }
 }

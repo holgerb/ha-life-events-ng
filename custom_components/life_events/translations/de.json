@@ -35,7 +35,8 @@
       }
     },
     "error": {
-      "invalid_date": "Ungültiges Datum. Verwende JJJJ-MM-TT (z. B. 1990-03-15) oder MM-TT (z. B. 03-15), wenn das Jahr unbekannt ist."
+      "invalid_date": "Ungültiges Datum. Verwende JJJJ-MM-TT (z. B. 1990-03-15) oder MM-TT (z. B. 03-15), wenn das Jahr unbekannt ist.",
+      "invalid_event": "Invalid event. Name and event type are required."
     }
   }
 }

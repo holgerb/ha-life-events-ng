@@ -35,7 +35,8 @@
       }
     },
     "error": {
-      "invalid_date": "Ogiltigt datum. Använd ÅÅÅÅ-MM-DD (t.ex. 1990-03-15) eller MM-DD (t.ex. 03-15) om året är okänt."
+      "invalid_date": "Ogiltigt datum. Använd ÅÅÅÅ-MM-DD (t.ex. 1990-03-15) eller MM-DD (t.ex. 03-15) om året är okänt.",
+      "invalid_event": "Invalid event. Name and event type are required."
     }
   }
 }

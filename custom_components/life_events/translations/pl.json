@@ -35,7 +35,8 @@
       }
     },
     "error": {
-      "invalid_date": "Nieprawidłowa data. Użyj formatu RRRR-MM-DD (np. 1990-03-15) lub MM-DD (np. 03-15), jeśli rok jest nieznany."
+      "invalid_date": "Nieprawidłowa data. Użyj formatu RRRR-MM-DD (np. 1990-03-15) lub MM-DD (np. 03-15), jeśli rok jest nieznany.",
+      "invalid_event": "Invalid event. Name and event type are required."
     }
   }
 }

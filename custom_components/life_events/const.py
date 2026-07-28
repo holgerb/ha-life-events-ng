@@ -3,6 +3,8 @@
 DOMAIN = "life_events"
 COORDINATOR = "coordinator"
 
+SERVICE_ADD_EVENT = "add_event"
+
 # Event types
 EVENT_TYPE_BIRTHDAY = "birthday"
 EVENT_TYPE_ANNIVERSARY = "anniversary"

@@ -2,9 +2,6 @@
 from __future__ import annotations
 
 import logging
-import re
-import uuid
-from datetime import date
 from typing import Any
 
 import voluptuous as vol
@@ -23,6 +20,7 @@ from .const import (
     CONF_EVENT_YEAR_UNKNOWN,
     EVENT_TYPES,
 )
+from .event import EventValidationError, build_event_data
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -147,24 +145,11 @@ class LifeEventsOptionsFlow(config_entries.OptionsFlow):
                 self._default_action = _DONE
                 return await self.async_step_init()
 
-            # Normalise and validate date format
-            date_str: str = user_input.get(CONF_EVENT_DATE, "")
-            year_unknown: bool = user_input.get(CONF_EVENT_YEAR_UNKNOWN, False)
-            normalised_date = _normalise_date(date_str, year_unknown)
-
-            if normalised_date is None:
-                errors[CONF_EVENT_DATE] = "invalid_date"
+            try:
+                event_data = build_event_data(user_input, existing)
+            except EventValidationError as err:
+                errors[err.field] = "invalid_date" if err.field == CONF_EVENT_DATE else "invalid_event"
             else:
-                event_data = {
-                    "_id": existing.get("_id") or str(uuid.uuid4())[:8],
-                    CONF_EVENT_NAME: user_input[CONF_EVENT_NAME].strip(),
-                    CONF_EVENT_DATE: normalised_date,
-                    CONF_EVENT_TYPE: user_input[CONF_EVENT_TYPE],
-                    CONF_EVENT_CUSTOM_LABEL: user_input.get(CONF_EVENT_CUSTOM_LABEL, "").strip(),
-                    CONF_EVENT_ICON: user_input.get(CONF_EVENT_ICON, "").strip(),
-                    CONF_EVENT_YEAR_UNKNOWN: year_unknown,
-                }
-
                 if self._editing_index is not None:
                     self._events[self._editing_index] = event_data
                 else:
@@ -226,34 +211,3 @@ def _event_summary(event: dict) -> str:
     etype = event.get(CONF_EVENT_TYPE, "")
     date_str = event.get(CONF_EVENT_DATE, "")
     return f"{name} — {etype} ({date_str})"
-
-
-def _normalise_date(date_str: str, year_unknown: bool) -> str | None:
-    """Parse a loosely-formatted date string and return it in the correct format.
-
-    Accepts YYYY-M-D, YYYY-MM-D, YYYY-M-DD, YYYY-MM-DD (when year_unknown=False)
-    and M-D, MM-D, M-DD, MM-DD (when year_unknown=True).
-    Returns the normalised string on success, or None if unparseable or invalid.
-    """
-    date_str = date_str.strip()
-
-    if year_unknown:
-        m = re.fullmatch(r"(\d{1,2})-(\d{1,2})", date_str)
-        if m:
-            month, day = int(m.group(1)), int(m.group(2))
-            try:
-                date(2000, month, day)
-                return f"{month:02d}-{day:02d}"
-            except ValueError:
-                return None
-    else:
-        m = re.fullmatch(r"(\d{4})-(\d{1,2})-(\d{1,2})", date_str)
-        if m:
-            year, month, day = int(m.group(1)), int(m.group(2)), int(m.group(3))
-            try:
-                date(year, month, day)
-                return f"{year}-{month:02d}-{day:02d}"
-            except ValueError:
-                return None
-
-    return None
