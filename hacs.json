@@ -1,7 +1,7 @@
 {
-  "name": "Life Events",
+  "name": "Life Events NG",
   "homeassistant": "2026.3.0",
   "hacs": "1.34.0",
   "render_readme": true,
-  "filename": "life-events-card.js"
+  "filename": "life-events-ng-card.js"
 }

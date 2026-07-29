@@ -2,19 +2,19 @@
   "config": {
     "step": {
       "user": {
-        "title": "Configurer Life Events",
-        "description": "Life Events suit les anniversaires, les commémorations et les dates récurrentes personnalisées — avec des capteurs de compte à rebours, une entité calendrier et une prise en charge des notifications intégrée.\n\nAppuie sur Envoyer pour terminer l'installation, puis utilise le bouton **Configurer** pour ajouter tes événements.",
+        "title": "Configurer Life Events NG",
+        "description": "Life Events NG suit les anniversaires, les commémorations et les dates récurrentes personnalisées — avec des capteurs de compte à rebours, une entité calendrier et une prise en charge des notifications intégrée.\n\nAppuie sur Envoyer pour terminer l'installation, puis utilise le bouton **Configurer** pour ajouter tes événements.",
         "data": {}
       }
     },
     "abort": {
-      "single_instance_allowed": "Une seule instance de Life Events peut être configurée."
+      "single_instance_allowed": "Une seule instance de Life Events NG peut être configurée."
     }
   },
   "options": {
     "step": {
       "init": {
-        "title": "Gérer Life Events",
+        "title": "Gérer Life Events NG",
         "description": "Tu as {count} événement(s) configuré(s). Sélectionne un événement pour le modifier ou ajoutes-en un nouveau.",
         "data": {
           "action": "Événements"

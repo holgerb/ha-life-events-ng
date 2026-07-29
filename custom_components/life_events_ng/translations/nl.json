@@ -2,19 +2,19 @@
   "config": {
     "step": {
       "user": {
-        "title": "Life Events instellen",
-        "description": "Life Events houdt verjaardagen, jubilea en aangepaste terugkerende datums bij — met aftelsensoren, een kalenderentiteit en ingebouwde ondersteuning voor meldingen.\n\nDruk op Verzenden om de installatie te voltooien en gebruik vervolgens de knop **Configureren** om je evenementen toe te voegen.",
+        "title": "Life Events NG instellen",
+        "description": "Life Events NG houdt verjaardagen, jubilea en aangepaste terugkerende datums bij — met aftelsensoren, een kalenderentiteit en ingebouwde ondersteuning voor meldingen.\n\nDruk op Verzenden om de installatie te voltooien en gebruik vervolgens de knop **Configureren** om je evenementen toe te voegen.",
         "data": {}
       }
     },
     "abort": {
-      "single_instance_allowed": "Er kan slechts één instantie van Life Events worden geconfigureerd."
+      "single_instance_allowed": "Er kan slechts één instantie van Life Events NG worden geconfigureerd."
     }
   },
   "options": {
     "step": {
       "init": {
-        "title": "Life Events beheren",
+        "title": "Life Events NG beheren",
         "description": "Je hebt {count} evenement(en) geconfigureerd. Selecteer een evenement om het te bewerken of voeg een nieuw toe.",
         "data": {
           "action": "Evenementen"

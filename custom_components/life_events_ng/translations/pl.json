@@ -2,19 +2,19 @@
   "config": {
     "step": {
       "user": {
-        "title": "Skonfiguruj Life Events",
-        "description": "Life Events śledzi urodziny, rocznice i niestandardowe daty cykliczne — z czujnikami odliczania, encją kalendarza i wbudowaną obsługą powiadomień.\n\nNaciśnij Wyślij, aby zakończyć instalację, a następnie użyj przycisku **Konfiguruj**, aby dodać swoje wydarzenia.",
+        "title": "Skonfiguruj Life Events NG",
+        "description": "Life Events NG śledzi urodziny, rocznice i niestandardowe daty cykliczne — z czujnikami odliczania, encją kalendarza i wbudowaną obsługą powiadomień.\n\nNaciśnij Wyślij, aby zakończyć instalację, a następnie użyj przycisku **Konfiguruj**, aby dodać swoje wydarzenia.",
         "data": {}
       }
     },
     "abort": {
-      "single_instance_allowed": "Można skonfigurować tylko jedną instancję Life Events."
+      "single_instance_allowed": "Można skonfigurować tylko jedną instancję Life Events NG."
     }
   },
   "options": {
     "step": {
       "init": {
-        "title": "Zarządzaj Life Events",
+        "title": "Zarządzaj Life Events NG",
         "description": "Masz skonfigurowanych {count} wydarzenie/wydarzeń. Wybierz wydarzenie, aby je edytować, lub dodaj nowe.",
         "data": {
           "action": "Wydarzenia"

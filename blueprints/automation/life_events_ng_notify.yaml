@@ -1,15 +1,15 @@
 blueprint:
-  name: Life Events — Notifications
+  name: Life Events NG — Notifications
   description: >
     Send a notification for upcoming birthdays, anniversaries, and custom events
-    from the Life Events integration.
+    from the Life Events NG integration.
 
 
-    Checks your Life Events sensors daily at a time you choose and sends
+    Checks your Life Events NG sensors daily at a time you choose and sends
     notifications on the day of the event and/or a set number of days before.
 
 
-    **Requires:** Life Events integration installed and configured.
+    **Requires:** Life Events NG integration installed and configured.
 
   domain: automation
   input:
@@ -51,7 +51,7 @@ blueprint:
     notify_title:
       name: Notification title
       description: Title shown on the notification.
-      default: "Life Events Reminder"
+      default: "Life Events NG Reminder"
       selector:
         text:
           multiline: false
@@ -71,7 +71,7 @@ action:
       for_each: >
         {% set ns = namespace(events=[]) %}
         {% for s in states.sensor
-            | selectattr('entity_id', 'match', 'sensor.life_events_.*') %}
+            | selectattr('entity_id', 'match', 'sensor.life_events_ng_.*') %}
           {% set ns.events = ns.events + [{
             'entity_id': s.entity_id,
             'state': s.state,

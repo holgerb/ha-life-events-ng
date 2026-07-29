@@ -1,4 +1,4 @@
-# ![alt text](icon-small.png) Life Events for Home Assistant
+# ![alt text](icon-small.png) Life Events NG for Home Assistant
 
 [![hacs_badge](https://img.shields.io/badge/HACS-Default-41BDF5.svg)](https://github.com/hacs/integration)
 [![GitHub release](https://img.shields.io/github/release/holgerb/ha-life-events-ng.svg)](https://github.com/holgerb/ha-life-events-ng/releases)
@@ -8,20 +8,22 @@
 
 Track birthdays, wedding anniversaries, and custom recurring dates — with countdown sensors, a calendar entity, a beautiful Lovelace card, and built-in notification support. No YAML required.
 
+This fork uses the Home Assistant domain `life_events_ng` so it can be installed alongside the original `life_events` integration without entity, service, or Lovelace card conflicts.
+
 ---
 
 ## ✨ Features
 
-- **Sensor per event** — `sensor.life_events_<n>` with state = days until next occurrence
+- **Sensor per event** — `sensor.life_events_ng_<n>` with state = days until next occurrence
 - **Rich attributes** — next date, age/years turning, event type, original date
-- **Calendar entity** — `calendar.life_events` integrates with the HA Calendar dashboard
+- **Calendar entity** — `calendar.life_events_ng` integrates with the HA Calendar dashboard
 - **Lovelace card** — polished card with urgency colouring, type badges, age display
 - **Notification blueprint** — one-click automation for day-of and advance notifications
 - **UI-only config** — add/edit/remove events from the HA UI, no YAML editing
 - **Event types** — Birthday, Anniversary, Custom (with your own label)
 - **Year-optional** — track day/month only when the birth year isn't known
 
-![Life Events Lovelace Card](images/lovelacecard.png)
+![Life Events NG Lovelace Card](images/lovelacecard.png)
 
 ---
 
@@ -30,21 +32,21 @@ Track birthdays, wedding anniversaries, and custom recurring dates — with coun
 ### Via HACS (recommended)
 
 1. Open HACS
-2. Search "Life Events" and install
+2. Search "Life Events NG" and install
 3. Restart Home Assistant
-4. Go to **Settings → Devices & Services → Add Integration → Life Events**
+4. Go to **Settings → Devices & Services → Add Integration → Life Events NG**
 
 ### Manual
 
-1. Copy `custom_components/life_events/` into your HA `custom_components/` folder
+1. Copy `custom_components/life_events_ng/` into your HA `custom_components/` folder
 2. Restart Home Assistant
-3. Go to **Settings → Devices & Services → Add Integration → Life Events**
+3. Go to **Settings → Devices & Services → Add Integration → Life Events NG**
 
 ---
 
 ## ⚙️ Configuration
 
-After adding the integration, go to **Settings → Devices & Services → Life Events → Configure** to add your events.
+After adding the integration, go to **Settings → Devices & Services → Life Events NG → Configure** to add your events.
 
 ### Adding an event
 
@@ -73,7 +75,7 @@ Once you've added all the events you want, in the Configure window, scroll down 
 You can also add events from Developer Tools → Actions, scripts, automations, or the Home Assistant API:
 
 ```yaml
-action: life_events.add_event
+action: life_events_ng.add_event
 data:
   name: Sarah
   date: "1990-03-15"
@@ -83,7 +85,7 @@ data:
 For dates where the year is unknown, use `MM-DD`:
 
 ```yaml
-action: life_events.add_event
+action: life_events_ng.add_event
 data:
   name: Mom and Dad
   date: "06-12"
@@ -96,7 +98,7 @@ Event names must be unique.
 
 ### Deleting an event
 
-Go to **Settings → Devices & Services → Life Events → Configure** and select your event from the dropdown and click Submit.
+Go to **Settings → Devices & Services → Life Events NG → Configure** and select your event from the dropdown and click Submit.
 
 ![Select Event](images/testEvent.png)
 
@@ -116,12 +118,12 @@ The card resource is registered automatically when the integration loads — no 
 
 ### Add the card
 
-**Recommended:** Edit your dashboard, click **Add Card**, and search for **Life Events Card** in the card picker. This gives you a visual editor to configure the card without any YAML.
+**Recommended:** Edit your dashboard, click **Add Card**, and search for **Life Events NG Card** in the card picker. This gives you a visual editor to configure the card without any YAML.
 
 **Via YAML:** Alternatively, add a Manual card with the following configuration:
 
 ```yaml
-type: custom:life-events-card
+type: custom:life-events-ng-card
 title: Upcoming Celebrations
 max_events: 10
 show_types:
@@ -134,7 +136,7 @@ show_types:
 
 | Option | Type | Default | Description |
 |---|---|---|---|
-| `title` | string | `Life Events` | Card heading |
+| `title` | string | `Life Events NG` | Card heading |
 | `max_events` | number | `10` | Maximum number of events to display |
 | `show_types` | list | all types | Filter to only these event types |
 | `show_past_days` | number | `0` | Also show events up to N days after they passed |
@@ -145,17 +147,17 @@ show_types:
 
 Import the bundled blueprint to get notified on the day of an event (and/or days before):
 
-[![Import Blueprint](https://my.home-assistant.io/badges/blueprint_import.svg)](https://my.home-assistant.io/redirect/blueprint_import/?blueprint_url=https://raw.githubusercontent.com/holgerb/ha-life-events-ng/main/blueprints/automation/life_events_notify.yaml)
+[![Import Blueprint](https://my.home-assistant.io/badges/blueprint_import.svg)](https://my.home-assistant.io/redirect/blueprint_import/?blueprint_url=https://raw.githubusercontent.com/holgerb/ha-life-events-ng/main/blueprints/automation/life_events_ng_notify.yaml)
 
-Or manually copy `blueprints/automation/life_events_notify.yaml` to your HA blueprints folder.
+Or manually copy `blueprints/automation/life_events_ng_notify.yaml` to your HA blueprints folder.
 
-The blueprint runs daily at a time you choose, checks all your Life Events sensors, and sends a notification for any events that are today or a set number of days away.
+The blueprint runs daily at a time you choose, checks all your Life Events NG sensors, and sends a notification for any events that are today or a set number of days away.
 
 ---
 
 ## 📡 Sensor Attributes
 
-Each `sensor.life_events_<n>` exposes:
+Each `sensor.life_events_ng_<n>` exposes:
 
 | Attribute | Example | Description |
 |---|---|---|
@@ -178,14 +180,14 @@ Each `sensor.life_events_<n>` exposes:
 alias: "Birthday notification"
 trigger:
   - platform: template
-    value_template: "{{ states('sensor.life_events_sarah') | int == 0 }}"
+    value_template: "{{ states('sensor.life_events_ng_sarah') | int == 0 }}"
 action:
   - service: notify.mobile_app_my_phone
     data:
       title: "🎂 Happy Birthday!"
       message: >
-        Today is {{ state_attr('sensor.life_events_sarah', 'event_label') }}
-        for Sarah — turning {{ state_attr('sensor.life_events_sarah', 'years_at_next') }}!
+        Today is {{ state_attr('sensor.life_events_ng_sarah', 'event_label') }}
+        for Sarah — turning {{ state_attr('sensor.life_events_ng_sarah', 'years_at_next') }}!
 ```
 
 ---
@@ -199,7 +201,7 @@ Yes — just give them different names (e.g. `Sarah Birthday`, `Sarah Work Anniv
 Feb 29 birthdays are celebrated on Feb 28 in non-leap years.
 
 **How do I show events on the Home Assistant calendar?**
-The `calendar.life_events` entity is created automatically. Add it to your Calendar dashboard view.
+The `calendar.life_events_ng` entity is created automatically. Add it to your Calendar dashboard view.
 
 ---
 

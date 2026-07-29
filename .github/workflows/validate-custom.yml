@@ -29,7 +29,7 @@ jobs:
           python3 - <<'EOF'
           import json, sys, re
           required = ["domain","name","version","documentation","issue_tracker","codeowners"]
-          with open("custom_components/life_events/manifest.json") as f:
+          with open("custom_components/life_events_ng/manifest.json") as f:
               m = json.load(f)
           missing = [k for k in required if k not in m]
           if missing:
@@ -57,11 +57,11 @@ jobs:
       - name: Lint Python files
         run: |
           pip install flake8 --quiet
-          flake8 custom_components/life_events/ --max-line-length=120 --ignore=E501,W503
+          flake8 custom_components/life_events_ng/ --max-line-length=120 --ignore=E501,W503
 
       - name: Check brand icon exists
         run: |
-          if [ ! -f "custom_components/life_events/brand/icon.png" ]; then
+          if [ ! -f "custom_components/life_events_ng/brand/icon.png" ]; then
             echo "⚠️  Warning: brand/icon.png not found — required for HACS submission"
           else
             echo "✅ Brand icon found"

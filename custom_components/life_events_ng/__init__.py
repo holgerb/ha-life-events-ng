@@ -1,4 +1,4 @@
-"""The Life Events integration."""
+"""The Life Events NG integration."""
 from __future__ import annotations
 
 import logging
@@ -44,8 +44,8 @@ ADD_EVENT_SCHEMA = vol.Schema({
     vol.Optional(CONF_EVENT_YEAR_UNKNOWN): cv.boolean,
 })
 
-_CARD_URL_BASE = "/life_events"
-_CARD_FILENAME = "life-events-card.js"
+_CARD_URL_BASE = "/life_events_ng"
+_CARD_FILENAME = "life-events-ng-card.js"
 _CARD_FILE = Path(__file__).parent / _CARD_FILENAME
 _CARD_RESOURCE_URL = f"{_CARD_URL_BASE}/{_CARD_FILENAME}"
 
@@ -80,14 +80,14 @@ async def _register_card(hass: HomeAssistant) -> None:
         existing = lovelace.resources.async_items()
         for resource in existing:
             if resource.get("url", "").startswith(_CARD_URL_BASE):
-                _LOGGER.debug("Life Events card resource already registered")
+                _LOGGER.debug("Life Events NG card resource already registered")
                 return
 
         await lovelace.resources.async_create_item({
             "res_type": "module",
             "url": _CARD_RESOURCE_URL,
         })
-        _LOGGER.info("Registered Life Events card as Lovelace resource: %s", _CARD_RESOURCE_URL)
+        _LOGGER.info("Registered Life Events NG card as Lovelace resource: %s", _CARD_RESOURCE_URL)
 
     await _try_register(None)
 
@@ -100,15 +100,15 @@ async def async_setup(hass: HomeAssistant, _config: dict) -> bool:
 
 
 def _register_services(hass: HomeAssistant) -> None:
-    """Register Life Events services."""
+    """Register Life Events NG services."""
     if hass.services.has_service(DOMAIN, SERVICE_ADD_EVENT):
         return
 
     async def async_add_event(call: ServiceCall) -> None:
-        """Add a Life Events event to the configured entry."""
+        """Add a Life Events NG event to the configured entry."""
         entries = hass.config_entries.async_entries(DOMAIN)
         if not entries:
-            raise HomeAssistantError("Life Events is not configured")
+            raise HomeAssistantError("Life Events NG is not configured")
 
         entry = entries[0]
         events = list(entry.options.get(CONF_EVENTS, entry.data.get(CONF_EVENTS, [])))
@@ -120,13 +120,13 @@ def _register_services(hass: HomeAssistant) -> None:
 
         event_name = event_data[CONF_EVENT_NAME]
         if any(event_names_match(event.get(CONF_EVENT_NAME, ""), event_name) for event in events):
-            raise HomeAssistantError(f"Life Events event already exists: {event_name}")
+            raise HomeAssistantError(f"Life Events NG event already exists: {event_name}")
 
         options = dict(entry.options)
         options[CONF_EVENTS] = [*events, event_data]
         hass.config_entries.async_update_entry(entry, options=options)
 
-        _LOGGER.info("Added Life Events event via service: %s", event_name)
+        _LOGGER.info("Added Life Events NG event via service: %s", event_name)
 
     hass.services.async_register(
         DOMAIN,
@@ -137,7 +137,7 @@ def _register_services(hass: HomeAssistant) -> None:
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
-    """Set up Life Events from a config entry."""
+    """Set up Life Events NG from a config entry."""
     coordinator = LifeEventsCoordinator(hass, entry)
     await coordinator.async_config_entry_first_refresh()
 
