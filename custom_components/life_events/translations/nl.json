@@ -35,7 +35,8 @@
       }
     },
     "error": {
-      "invalid_date": "Ongeldige datum. Gebruik JJJJ-MM-DD (bijv. 1990-03-15) of MM-DD (bijv. 03-15) als het jaar onbekend is."
+      "invalid_date": "Ongeldige datum. Gebruik JJJJ-MM-DD (bijv. 1990-03-15) of MM-DD (bijv. 03-15) als het jaar onbekend is.",
+      "invalid_event": "Invalid event. Name and event type are required."
     }
   }
 }

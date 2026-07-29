@@ -35,7 +35,8 @@
       }
     },
     "error": {
-      "invalid_date": "Date invalide. Utilise AAAA-MM-JJ (ex. 1990-03-15) ou MM-JJ (ex. 03-15) si l'année est inconnue."
+      "invalid_date": "Date invalide. Utilise AAAA-MM-JJ (ex. 1990-03-15) ou MM-JJ (ex. 03-15) si l'année est inconnue.",
+      "invalid_event": "Invalid event. Name and event type are required."
     }
   }
 }

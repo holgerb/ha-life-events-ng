@@ -35,7 +35,8 @@
       }
     },
     "error": {
-      "invalid_date": "Invalid date. Use YYYY-MM-DD (e.g. 1990-03-15) or MM-DD (e.g. 03-15) if year is unknown."
+      "invalid_date": "Invalid date. Use YYYY-MM-DD (e.g. 1990-03-15) or MM-DD (e.g. 03-15) if year is unknown.",
+      "invalid_event": "Invalid event. Name and event type are required."
     }
   }
 }

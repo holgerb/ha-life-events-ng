@@ -68,6 +68,32 @@ Once you've added all the events you want, in the Configure window, scroll down 
 
 ---
 
+### Adding an event with a service
+
+You can also add events from Developer Tools → Actions, scripts, automations, or the Home Assistant API:
+
+```yaml
+action: life_events.add_event
+data:
+  name: Sarah
+  date: "1990-03-15"
+  type: birthday
+```
+
+For dates where the year is unknown, use `MM-DD`:
+
+```yaml
+action: life_events.add_event
+data:
+  name: Mom and Dad
+  date: "06-12"
+  type: anniversary
+```
+
+Event names must be unique.
+
+---
+
 ### Deleting an event
 
 Go to **Settings → Devices & Services → Life Events → Configure** and select your event from the dropdown and click Submit.

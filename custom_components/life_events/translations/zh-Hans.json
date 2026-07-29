@@ -35,7 +35,8 @@
       }
     },
     "error": {
-      "invalid_date": "日期无效。请使用 YYYY-MM-DD（例如 1990-03-15），或在年份未知时使用 MM-DD（例如 03-15）。"
+      "invalid_date": "日期无效。请使用 YYYY-MM-DD（例如 1990-03-15），或在年份未知时使用 MM-DD（例如 03-15）。",
+      "invalid_event": "Invalid event. Name and event type are required."
     }
   }
 }
