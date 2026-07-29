@@ -1,6 +1,5 @@
 # ![alt text](icon-small.png) Life Events NG for Home Assistant
 
-[![hacs_badge](https://img.shields.io/badge/HACS-Default-41BDF5.svg)](https://github.com/hacs/integration)
 [![GitHub release](https://img.shields.io/github/release/holgerb/ha-life-events-ng.svg)](https://github.com/holgerb/ha-life-events-ng/releases)
 [![License](https://img.shields.io/github/license/holgerb/ha-life-events-ng)](LICENSE)
 
@@ -29,12 +28,15 @@ This fork uses the Home Assistant domain `life_events_ng` so it can be installed
 
 ## 📦 Installation
 
-### Via HACS (recommended)
+### Via HACS custom repository
 
 1. Open HACS
-2. Search "Life Events NG" and install
-3. Restart Home Assistant
-4. Go to **Settings → Devices & Services → Add Integration → Life Events NG**
+2. Open the three-dot menu and select **Custom repositories**
+3. Add `https://github.com/holgerb/ha-life-events-ng`
+4. Select **Integration** as the repository type
+5. Install **Life Events NG**
+6. Restart Home Assistant
+7. Go to **Settings → Devices & Services → Add Integration → Life Events NG**
 
 ### Manual
 
