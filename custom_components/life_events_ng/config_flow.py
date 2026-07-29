@@ -1,4 +1,4 @@
-"""Config flow for Life Events integration."""
+"""Config flow for Life Events NG integration."""
 from __future__ import annotations
 
 import logging
@@ -44,7 +44,7 @@ class LifeEventsConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
         if user_input is not None:
             return self.async_create_entry(
-                title="Life Events",
+                title="Life Events NG",
                 data={CONF_EVENTS: []},
             )
 
@@ -52,7 +52,7 @@ class LifeEventsConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             step_id="user",
             description_placeholders={
                 "description": (
-                    "Life Events tracks birthdays, anniversaries, and custom "
+                    "Life Events NG tracks birthdays, anniversaries, and custom "
                     "recurring dates. After setup, add your events via the "
                     "Configure button on the integration card."
                 )

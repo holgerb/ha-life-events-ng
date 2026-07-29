@@ -1,10 +1,10 @@
 /**
- * Life Events Card
- * A custom Lovelace card for the Life Events integration.
+ * Life Events NG Card
+ * A custom Lovelace card for the Life Events NG integration.
  * Displays upcoming birthdays, anniversaries, and custom events.
  *
  * Usage:
- *   type: custom:life-events-card
+ *   type: custom:life-events-ng-card
  *   title: Upcoming Celebrations   (optional)
  *   max_events: 10                 (optional, default 10)
  *   show_types: [birthday, anniversary, custom]  (optional, default all)
@@ -49,7 +49,7 @@ class LifeEventsCard extends HTMLElement {
       : ["birthday", "anniversary", "custom"];
 
     this._config = {
-      title: config.title || "Life Events",
+      title: config.title || "Life Events NG",
       max_events: Number.isFinite(maxEvents) && maxEvents > 0 ? Math.min(maxEvents, 50) : 10,
       show_types: showTypes.length ? showTypes : ["birthday", "anniversary", "custom"],
       show_past_days: Number.isFinite(showPastDays) && showPastDays > 0 ? Math.min(showPastDays, 365) : 0,
@@ -63,7 +63,7 @@ class LifeEventsCard extends HTMLElement {
     const states = this._hass.states;
 
     for (const entityId of Object.keys(states)) {
-      if (!entityId.startsWith("sensor.life_events_")) continue;
+      if (!entityId.startsWith("sensor.life_events_ng_")) continue;
 
       const state = states[entityId];
       const attrs = state.attributes || {};
@@ -336,12 +336,12 @@ class LifeEventsCard extends HTMLElement {
   }
 
   static getConfigElement() {
-    return document.createElement("life-events-card-editor");
+    return document.createElement("life-events-ng-card-editor");
   }
 
   static getStubConfig() {
     return {
-      title: "Life Events",
+      title: "Life Events NG",
       max_events: 10,
       show_types: ["birthday", "anniversary", "custom"],
     };
@@ -367,7 +367,7 @@ class LifeEventsCardEditor extends HTMLElement {
 
   _render() {
     const c = this._config || {};
-    const title = LifeEventsCard.escapeHtml(c.title || "Life Events");
+    const title = LifeEventsCard.escapeHtml(c.title || "Life Events NG");
     const maxEvents = Number.parseInt(c.max_events, 10);
     const maxEventsValue = Number.isFinite(maxEvents) && maxEvents > 0 ? Math.min(maxEvents, 50) : 10;
 
@@ -413,14 +413,14 @@ LifeEventsCard.escapeHtml = function escapeHtml(str) {
 
 // ── Registration ───────────────────────────────────────────────────────────
 
-customElements.define("life-events-card", LifeEventsCard);
-customElements.define("life-events-card-editor", LifeEventsCardEditor);
+customElements.define("life-events-ng-card", LifeEventsCard);
+customElements.define("life-events-ng-card-editor", LifeEventsCardEditor);
 
 window.customCards = window.customCards || [];
 window.customCards.push({
-  type: "life-events-card",
-  name: "Life Events Card",
-  description: "Shows upcoming birthdays, anniversaries, and custom events from the Life Events integration.",
+  type: "life-events-ng-card",
+  name: "Life Events NG Card",
+  description: "Shows upcoming birthdays, anniversaries, and custom events from the Life Events NG integration.",
   preview: true,
   documentationURL: "https://github.com/holgerb/ha-life-events-ng",
 });

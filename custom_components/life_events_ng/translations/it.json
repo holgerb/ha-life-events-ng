@@ -2,19 +2,19 @@
   "config": {
     "step": {
       "user": {
-        "title": "Configura Life Events",
-        "description": "Life Events tiene traccia di compleanni, anniversari e date ricorrenti personalizzate — con sensori di conto alla rovescia, un'entità calendario e supporto alle notifiche integrato.\n\nPremi Invia per completare l'installazione, poi usa il pulsante **Configura** per aggiungere i tuoi eventi.",
+        "title": "Configura Life Events NG",
+        "description": "Life Events NG tiene traccia di compleanni, anniversari e date ricorrenti personalizzate — con sensori di conto alla rovescia, un'entità calendario e supporto alle notifiche integrato.\n\nPremi Invia per completare l'installazione, poi usa il pulsante **Configura** per aggiungere i tuoi eventi.",
         "data": {}
       }
     },
     "abort": {
-      "single_instance_allowed": "È possibile configurare una sola istanza di Life Events."
+      "single_instance_allowed": "È possibile configurare una sola istanza di Life Events NG."
     }
   },
   "options": {
     "step": {
       "init": {
-        "title": "Gestisci Life Events",
+        "title": "Gestisci Life Events NG",
         "description": "Hai {count} evento/i configurato/i. Seleziona un evento per modificarlo oppure aggiungine uno nuovo.",
         "data": {
           "action": "Eventi"

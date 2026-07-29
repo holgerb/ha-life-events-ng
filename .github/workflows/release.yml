@@ -43,7 +43,7 @@ jobs:
           import os
 
           version = os.environ["VERSION"]
-          with open("custom_components/life_events/manifest.json", "r") as f:
+          with open("custom_components/life_events_ng/manifest.json", "r") as f:
               manifest = json.load(f)
           manifest_version = manifest.get("version")
           if manifest_version != version:
@@ -60,7 +60,7 @@ jobs:
         run: |
           python3 - <<EOF
           import json
-          with open("custom_components/life_events/manifest.json") as f:
+          with open("custom_components/life_events_ng/manifest.json") as f:
               m = json.load(f)
           print(f"✅ manifest.json version: {m['version']}")
           required = ["domain", "name", "version", "documentation", "issue_tracker", "codeowners"]
@@ -79,4 +79,4 @@ jobs:
             ---
             ### 📦 Installing this release
             **HACS:** Update via the HACS dashboard.
-            **Manual:** Download and replace your `custom_components/life_events/` folder, then restart Home Assistant.
+            **Manual:** Download and replace your `custom_components/life_events_ng/` folder, then restart Home Assistant.

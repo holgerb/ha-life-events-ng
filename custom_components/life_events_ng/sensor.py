@@ -1,4 +1,4 @@
-"""Sensor platform for Life Events."""
+"""Sensor platform for Life Events NG."""
 from __future__ import annotations
 
 import logging
@@ -34,7 +34,7 @@ async def async_setup_entry(
     entry: ConfigEntry,
     async_add_entities: AddEntitiesCallback,
 ) -> None:
-    """Set up Life Events sensors."""
+    """Set up Life Events NG sensors."""
     coordinator: LifeEventsCoordinator = hass.data[DOMAIN][entry.entry_id][COORDINATOR]
     events_config = entry.options.get(CONF_EVENTS, entry.data.get(CONF_EVENTS, []))
 
@@ -52,7 +52,7 @@ class LifeEventSensor(CoordinatorEntity, SensorEntity):
 
     _attr_state_class = SensorStateClass.MEASUREMENT
     _attr_native_unit_of_measurement = "days"
-    _attr_has_entity_name = True
+    _attr_has_entity_name = False
 
     def __init__(
         self,
@@ -67,7 +67,7 @@ class LifeEventSensor(CoordinatorEntity, SensorEntity):
         self._entry = entry
 
         self._attr_unique_id = f"{DOMAIN}_{entry.entry_id}_{self._entity_key}"
-        self._attr_name = name
+        self._attr_name = f"Life Events NG {name}"
 
     @property
     def _event_data(self) -> dict | None:
@@ -118,8 +118,8 @@ class LifeEventSensor(CoordinatorEntity, SensorEntity):
         """Group all life event sensors under one device."""
         return DeviceInfo(
             identifiers={(DOMAIN, self._entry.entry_id)},
-            name="Life Events",
-            manufacturer="Life Events",
-            model="Life Events Integration",
+            name="Life Events NG",
+            manufacturer="Life Events NG",
+            model="Life Events NG Integration",
             entry_type=DeviceEntryType.SERVICE,
         )

@@ -2,19 +2,19 @@
   "config": {
     "step": {
       "user": {
-        "title": "Sett opp Life Events",
-        "description": "Life Events sporer bursdager, jubileer og egendefinerte tilbakevendende datoer — med nedtellingsensorer, en kalenderenhet og innebygd støtte for varsler.\n\nTrykk Send for å fullføre installasjonen, og bruk deretter **Konfigurer**-knappen for å legge til hendelsene dine.",
+        "title": "Sett opp Life Events NG",
+        "description": "Life Events NG sporer bursdager, jubileer og egendefinerte tilbakevendende datoer — med nedtellingsensorer, en kalenderenhet og innebygd støtte for varsler.\n\nTrykk Send for å fullføre installasjonen, og bruk deretter **Konfigurer**-knappen for å legge til hendelsene dine.",
         "data": {}
       }
     },
     "abort": {
-      "single_instance_allowed": "Bare én instans av Life Events kan konfigureres."
+      "single_instance_allowed": "Bare én instans av Life Events NG kan konfigureres."
     }
   },
   "options": {
     "step": {
       "init": {
-        "title": "Administrer Life Events",
+        "title": "Administrer Life Events NG",
         "description": "Du har {count} hendelse(r) konfigurert. Velg en hendelse for å redigere den, eller legg til en ny.",
         "data": {
           "action": "Hendelser"

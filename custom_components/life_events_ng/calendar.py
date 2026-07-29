@@ -1,4 +1,4 @@
-"""Calendar platform for Life Events."""
+"""Calendar platform for Life Events NG."""
 from __future__ import annotations
 
 import logging
@@ -22,7 +22,7 @@ async def async_setup_entry(
     entry: ConfigEntry,
     async_add_entities: AddEntitiesCallback,
 ) -> None:
-    """Set up the Life Events calendar."""
+    """Set up the Life Events NG calendar."""
     coordinator: LifeEventsCoordinator = hass.data[DOMAIN][entry.entry_id][COORDINATOR]
     async_add_entities([LifeEventsCalendar(coordinator, entry)], True)
 
@@ -40,9 +40,9 @@ class LifeEventsCalendar(CoordinatorEntity, CalendarEntity):
         self._attr_unique_id = f"{DOMAIN}_{entry.entry_id}_calendar"
         self._attr_device_info = DeviceInfo(
             identifiers={(DOMAIN, entry.entry_id)},
-            name="Life Events",
-            manufacturer="Life Events",
-            model="Life Events Integration",
+            name="Life Events NG",
+            manufacturer="Life Events NG",
+            model="Life Events NG Integration",
             entry_type=DeviceEntryType.SERVICE,
         )
 

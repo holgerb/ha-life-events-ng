@@ -2,19 +2,19 @@
   "config": {
     "step": {
       "user": {
-        "title": "Konfigurera Life Events",
-        "description": "Life Events spårar födelsedagar, jubileer och anpassade återkommande datum — med nedräkningssensorer, en kalenderentitet och inbyggt stöd för aviseringar.\n\nTryck på Skicka för att slutföra installationen och använd sedan knappen **Konfigurera** för att lägga till dina händelser.",
+        "title": "Konfigurera Life Events NG",
+        "description": "Life Events NG spårar födelsedagar, jubileer och anpassade återkommande datum — med nedräkningssensorer, en kalenderentitet och inbyggt stöd för aviseringar.\n\nTryck på Skicka för att slutföra installationen och använd sedan knappen **Konfigurera** för att lägga till dina händelser.",
         "data": {}
       }
     },
     "abort": {
-      "single_instance_allowed": "Endast en instans av Life Events kan konfigureras."
+      "single_instance_allowed": "Endast en instans av Life Events NG kan konfigureras."
     }
   },
   "options": {
     "step": {
       "init": {
-        "title": "Hantera Life Events",
+        "title": "Hantera Life Events NG",
         "description": "Du har {count} händelse(r) konfigurerade. Välj en händelse för att redigera den eller lägg till en ny.",
         "data": {
           "action": "Händelser"

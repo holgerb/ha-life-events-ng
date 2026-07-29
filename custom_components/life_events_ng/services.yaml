@@ -1,6 +1,6 @@
 add_event:
   name: Add event
-  description: Add a birthday, anniversary, or custom recurring date to Life Events.
+  description: Add a birthday, anniversary, or custom recurring date to Life Events NG.
   fields:
     name:
       name: Name

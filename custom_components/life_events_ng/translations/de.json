@@ -2,19 +2,19 @@
   "config": {
     "step": {
       "user": {
-        "title": "Life Events einrichten",
-        "description": "Life Events verfolgt Geburtstage, Jahrestage und benutzerdefinierte wiederkehrende Daten – mit Countdown-Sensoren, einem Kalender-Eintrag und integrierter Benachrichtigungsunterstützung.\n\nDrück auf Senden, um die Installation abzuschließen, und nutze dann die Schaltfläche **Konfigurieren**, um deine Ereignisse hinzuzufügen.",
+        "title": "Life Events NG einrichten",
+        "description": "Life Events NG verfolgt Geburtstage, Jahrestage und benutzerdefinierte wiederkehrende Daten – mit Countdown-Sensoren, einem Kalender-Eintrag und integrierter Benachrichtigungsunterstützung.\n\nDrück auf Senden, um die Installation abzuschließen, und nutze dann die Schaltfläche **Konfigurieren**, um deine Ereignisse hinzuzufügen.",
         "data": {}
       }
     },
     "abort": {
-      "single_instance_allowed": "Es kann nur eine Instanz von Life Events konfiguriert werden."
+      "single_instance_allowed": "Es kann nur eine Instanz von Life Events NG konfiguriert werden."
     }
   },
   "options": {
     "step": {
       "init": {
-        "title": "Life Events verwalten",
+        "title": "Life Events NG verwalten",
         "description": "Du hast {count} Ereignis(se) konfiguriert. Wähle ein Ereignis zum Bearbeiten oder füge ein neues hinzu.",
         "data": {
           "action": "Ereignisse"

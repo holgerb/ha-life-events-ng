@@ -1,6 +1,6 @@
-"""Constants for the Life Events integration."""
+"""Constants for the Life Events NG integration."""
 
-DOMAIN = "life_events"
+DOMAIN = "life_events_ng"
 COORDINATOR = "coordinator"
 
 SERVICE_ADD_EVENT = "add_event"
@@ -44,7 +44,7 @@ ATTR_YEAR_UNKNOWN = "year_unknown"
 ATTR_ORIGINAL_DATE = "original_date"
 
 # Calendar
-CALENDAR_NAME = "Life Events"
+CALENDAR_NAME = "Life Events NG"
 
 # Update interval: recalculate hourly
 UPDATE_INTERVAL_HOURS = 1

@@ -2,19 +2,19 @@
   "config": {
     "step": {
       "user": {
-        "title": "Configurar Life Events",
-        "description": "Life Events realiza un seguimiento de cumpleaños, aniversarios y fechas recurrentes personalizadas — con sensores de cuenta regresiva, una entidad de calendario y soporte de notificaciones integrado.\n\nPulsa Enviar para completar la instalación y luego usa el botón **Configurar** para añadir tus eventos.",
+        "title": "Configurar Life Events NG",
+        "description": "Life Events NG realiza un seguimiento de cumpleaños, aniversarios y fechas recurrentes personalizadas — con sensores de cuenta regresiva, una entidad de calendario y soporte de notificaciones integrado.\n\nPulsa Enviar para completar la instalación y luego usa el botón **Configurar** para añadir tus eventos.",
         "data": {}
       }
     },
     "abort": {
-      "single_instance_allowed": "Solo se puede configurar una instancia de Life Events."
+      "single_instance_allowed": "Solo se puede configurar una instancia de Life Events NG."
     }
   },
   "options": {
     "step": {
       "init": {
-        "title": "Gestionar Life Events",
+        "title": "Gestionar Life Events NG",
         "description": "Tienes {count} evento(s) configurado(s). Selecciona un evento para editarlo o añade uno nuevo.",
         "data": {
           "action": "Eventos"

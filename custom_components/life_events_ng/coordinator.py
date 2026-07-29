@@ -1,4 +1,4 @@
-"""DataUpdateCoordinator for Life Events."""
+"""DataUpdateCoordinator for Life Events NG."""
 from __future__ import annotations
 
 import logging
@@ -169,7 +169,7 @@ class LifeEventsCoordinator(DataUpdateCoordinator):
                     summary = f"{name}'s {label}{years_str}"
 
                     calendar_events.append({
-                        "uid": f"life_events_{name}_{occurrence.isoformat()}",
+                        "uid": f"life_events_ng_{name}_{occurrence.isoformat()}",
                         "summary": summary,
                         "start": occurrence,
                         "end": occurrence + timedelta(days=1),

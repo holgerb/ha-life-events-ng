@@ -1,6 +1,6 @@
 {
-  "domain": "life_events",
-  "name": "Life Events",
+  "domain": "life_events_ng",
+  "name": "Life Events NG",
   "codeowners": [
     "@holgerb"
   ],

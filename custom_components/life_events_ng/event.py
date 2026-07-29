@@ -1,4 +1,4 @@
-"""Helpers for validating and building Life Events event data."""
+"""Helpers for validating and building Life Events NG event data."""
 from __future__ import annotations
 
 import re
