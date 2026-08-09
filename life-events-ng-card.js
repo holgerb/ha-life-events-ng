@@ -63,14 +63,15 @@ class LifeEventsCard extends HTMLElement {
     const states = this._hass.states;
 
     for (const entityId of Object.keys(states)) {
-      if (!entityId.startsWith("sensor.life_events_ng_")) continue;
-
       const state = states[entityId];
       const attrs = state.attributes || {};
       const daysUntil = parseInt(state.state, 10);
+      const eventType = attrs.event_type;
 
       if (isNaN(daysUntil)) continue;
-      if (!this._config.show_types.includes(attrs.event_type)) continue;
+      if (!Object.prototype.hasOwnProperty.call(EVENT_ICONS, eventType)) continue;
+      if (!attrs.next_date || !Object.prototype.hasOwnProperty.call(attrs, "original_date")) continue;
+      if (!this._config.show_types.includes(eventType)) continue;
       if (daysUntil < -this._config.show_past_days) continue;
 
       events.push({
@@ -79,7 +80,7 @@ class LifeEventsCard extends HTMLElement {
         days_until: daysUntil,
         next_date: attrs.next_date,
         years_at_next: attrs.years_at_next,
-        event_type: attrs.event_type || "custom",
+        event_type: eventType,
         event_label: attrs.event_label || "Event",
         year_unknown: attrs.year_unknown || false,
         icon: attrs.icon,
