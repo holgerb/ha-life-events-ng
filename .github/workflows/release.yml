@@ -1,82 +1,31 @@
 name: Release
 
 on:
-  release:
-    types: [published]
+  push:
+    branches:
+      - main
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
+  validate:
+    name: Validate release candidate
+    uses: ./.github/workflows/validate-custom.yml
+
   release:
-    name: Verify and publish release notes
+    name: Prepare or publish release
+    needs: validate
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+
     steps:
-      - name: Checkout
-        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - name: Run Release Please
+        uses: googleapis/release-please-action@v4
         with:
-          ref: main
-
-      - name: Extract version from tag
-        id: version
-        run: |
-          TAG="${{ github.event.release.tag_name }}"
-          VERSION="${TAG#v}"
-          echo "version=$VERSION" >> $GITHUB_OUTPUT
-          echo "tag=$TAG" >> $GITHUB_OUTPUT
-          echo "Releasing version: $VERSION"
-
-      - name: Validate version format
-        run: |
-          VERSION="${{ steps.version.outputs.version }}"
-          if ! echo "$VERSION" | grep -qE '^[0-9]{4}\.[0-9]+\.[0-9]+\.[0-9]+$'; then
-            echo "❌ Version '$VERSION' does not match expected format YYYY.M.P.B (e.g. 2026.3.7.0)"
-            exit 1
-          fi
-          echo "✅ Version format valid: $VERSION"
-
-      - name: Verify manifest.json version
-        run: |
-          VERSION="${{ steps.version.outputs.version }}"
-          python3 - <<'EOF'
-          import json
-          import os
-
-          version = os.environ["VERSION"]
-          with open("custom_components/life_events_ng/manifest.json", "r") as f:
-              manifest = json.load(f)
-          manifest_version = manifest.get("version")
-          if manifest_version != version:
-              raise SystemExit(
-                  f"❌ manifest.json version {manifest_version!r} does not match release tag {version!r}. "
-                  "Open a PR to bump the manifest version before publishing the release."
-              )
-          print(f"✅ manifest.json version matches release tag: {version}")
-          EOF
-        env:
-          VERSION: ${{ steps.version.outputs.version }}
-
-      - name: Verify final manifest
-        run: |
-          python3 - <<EOF
-          import json
-          with open("custom_components/life_events_ng/manifest.json") as f:
-              m = json.load(f)
-          print(f"✅ manifest.json version: {m['version']}")
-          required = ["domain", "name", "version", "documentation", "issue_tracker", "codeowners"]
-          missing = [k for k in required if k not in m]
-          if missing:
-              raise SystemExit(f"❌ Missing manifest keys: {missing}")
-          EOF
-
-      - name: Append install instructions to release
-        uses: softprops/action-gh-release@3bb12739c298aeb8a4eeaf626c5b8d85266b0e65 # v2
-        with:
-          tag_name: ${{ steps.version.outputs.tag }}
-          append_body: true
-          body: |
-
-            ---
-            ### 📦 Installing this release
-            **HACS:** Update via the HACS dashboard.
-            **Manual:** Download and replace your `custom_components/life_events_ng/` folder, then restart Home Assistant.
+          token: ${{ secrets.GITHUB_TOKEN }}
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
