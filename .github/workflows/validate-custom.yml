@@ -5,6 +5,7 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+  workflow_call:
 
 permissions:
   contents: read
@@ -36,8 +37,8 @@ jobs:
               print(f"❌ Missing manifest keys: {missing}")
               sys.exit(1)
           version = m["version"]
-          if not re.match(r'^\d{4}\.\d+\.\d+\.\d+$', version):
-              print(f"❌ Version '{version}' does not match expected format YYYY.M.P.B (e.g. 2026.3.7.0)")
+          if not re.match(r'^\d+\.\d+\.\d+$', version):
+              print(f"❌ Version '{version}' does not match expected SemVer format MAJOR.MINOR.PATCH")
               sys.exit(1)
           print(f"✅ manifest.json valid — version {version}")
           EOF
