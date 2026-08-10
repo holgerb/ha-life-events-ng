@@ -4,6 +4,8 @@ DOMAIN = "life_events_ng"
 COORDINATOR = "coordinator"
 
 SERVICE_ADD_EVENT = "add_event"
+SERVICE_UPDATE_EVENT = "update_event"
+SERVICE_DELETE_EVENT = "delete_event"
 
 # Event types
 EVENT_TYPE_BIRTHDAY = "birthday"

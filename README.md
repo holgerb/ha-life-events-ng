@@ -74,7 +74,9 @@ Once you've added all the events you want, in the Configure window, scroll down 
 
 ### Adding an event with a service
 
-You can also add events from Developer Tools → Actions, scripts, automations, or the Home Assistant API:
+You can also manage events from Developer Tools → Actions, scripts, automations, or the Home Assistant API.
+
+Add a new event:
 
 ```yaml
 action: life_events_ng.add_event
@@ -95,6 +97,33 @@ data:
 ```
 
 Event names must be unique.
+
+Update an existing event by name. Only provided fields are changed:
+
+```yaml
+action: life_events_ng.update_event
+data:
+  name: Sarah
+  date: "1990-03-16"
+  icon: mdi:cake-variant
+```
+
+Rename an event:
+
+```yaml
+action: life_events_ng.update_event
+data:
+  name: Sarah
+  new_name: Sarah Miller
+```
+
+Delete an event:
+
+```yaml
+action: life_events_ng.delete_event
+data:
+  name: Sarah Miller
+```
 
 ---
 

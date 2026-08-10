@@ -27,6 +27,8 @@ from .const import (
     CONF_EVENT_YEAR_UNKNOWN,
     EVENT_TYPES,
     SERVICE_ADD_EVENT,
+    SERVICE_UPDATE_EVENT,
+    SERVICE_DELETE_EVENT,
 )
 from .coordinator import LifeEventsCoordinator
 from .event import EventValidationError, build_event_data, event_names_match
@@ -42,6 +44,20 @@ ADD_EVENT_SCHEMA = vol.Schema({
     vol.Optional(CONF_EVENT_CUSTOM_LABEL, default=""): cv.string,
     vol.Optional(CONF_EVENT_ICON, default=""): cv.string,
     vol.Optional(CONF_EVENT_YEAR_UNKNOWN): cv.boolean,
+})
+
+UPDATE_EVENT_SCHEMA = vol.Schema({
+    vol.Required(CONF_EVENT_NAME): cv.string,
+    vol.Optional("new_name"): cv.string,
+    vol.Optional(CONF_EVENT_DATE): cv.string,
+    vol.Optional(CONF_EVENT_TYPE): vol.In(EVENT_TYPES),
+    vol.Optional(CONF_EVENT_CUSTOM_LABEL): cv.string,
+    vol.Optional(CONF_EVENT_ICON): cv.string,
+    vol.Optional(CONF_EVENT_YEAR_UNKNOWN): cv.boolean,
+})
+
+DELETE_EVENT_SCHEMA = vol.Schema({
+    vol.Required(CONF_EVENT_NAME): cv.string,
 })
 
 _CARD_URL_BASE = "/life_events_ng"
@@ -101,17 +117,34 @@ async def async_setup(hass: HomeAssistant, _config: dict) -> bool:
 
 def _register_services(hass: HomeAssistant) -> None:
     """Register Life Events NG services."""
-    if hass.services.has_service(DOMAIN, SERVICE_ADD_EVENT):
-        return
-
-    async def async_add_event(call: ServiceCall) -> None:
-        """Add a Life Events NG event to the configured entry."""
+    def _get_entry() -> ConfigEntry:
+        """Return the configured Life Events NG entry."""
         entries = hass.config_entries.async_entries(DOMAIN)
         if not entries:
             raise HomeAssistantError("Life Events NG is not configured")
+        return entries[0]
 
-        entry = entries[0]
-        events = list(entry.options.get(CONF_EVENTS, entry.data.get(CONF_EVENTS, [])))
+    def _get_events(entry: ConfigEntry) -> list[dict[str, Any]]:
+        """Return a mutable copy of the configured events."""
+        return list(entry.options.get(CONF_EVENTS, entry.data.get(CONF_EVENTS, [])))
+
+    def _find_event_index(events: list[dict[str, Any]], name: str) -> int:
+        """Return the index of the event matching name."""
+        for index, event in enumerate(events):
+            if event_names_match(event.get(CONF_EVENT_NAME, ""), name):
+                return index
+        raise HomeAssistantError(f"Life Events NG event not found: {name}")
+
+    def _save_events(entry: ConfigEntry, events: list[dict[str, Any]]) -> None:
+        """Persist the updated events list."""
+        options = dict(entry.options)
+        options[CONF_EVENTS] = events
+        hass.config_entries.async_update_entry(entry, options=options)
+
+    async def async_add_event(call: ServiceCall) -> None:
+        """Add a Life Events NG event to the configured entry."""
+        entry = _get_entry()
+        events = _get_events(entry)
 
         try:
             event_data = build_event_data(dict(call.data))
@@ -122,18 +155,89 @@ def _register_services(hass: HomeAssistant) -> None:
         if any(event_names_match(event.get(CONF_EVENT_NAME, ""), event_name) for event in events):
             raise HomeAssistantError(f"Life Events NG event already exists: {event_name}")
 
-        options = dict(entry.options)
-        options[CONF_EVENTS] = [*events, event_data]
-        hass.config_entries.async_update_entry(entry, options=options)
+        _save_events(entry, [*events, event_data])
 
         _LOGGER.info("Added Life Events NG event via service: %s", event_name)
 
-    hass.services.async_register(
-        DOMAIN,
-        SERVICE_ADD_EVENT,
-        async_add_event,
-        schema=ADD_EVENT_SCHEMA,
-    )
+    async def async_update_event(call: ServiceCall) -> None:
+        """Update a Life Events NG event in the configured entry."""
+        call_data = dict(call.data)
+        update_keys = set(call_data) - {CONF_EVENT_NAME}
+        if not update_keys:
+            raise HomeAssistantError("No Life Events NG event update fields provided")
+
+        entry = _get_entry()
+        events = _get_events(entry)
+        event_name = call_data[CONF_EVENT_NAME]
+        event_index = _find_event_index(events, event_name)
+        existing = events[event_index]
+
+        updated = dict(existing)
+        if "new_name" in call_data:
+            updated[CONF_EVENT_NAME] = call_data["new_name"]
+        if CONF_EVENT_DATE in call_data:
+            updated[CONF_EVENT_DATE] = call_data[CONF_EVENT_DATE]
+            if CONF_EVENT_YEAR_UNKNOWN not in call_data:
+                updated.pop(CONF_EVENT_YEAR_UNKNOWN, None)
+        for field in (
+            CONF_EVENT_TYPE,
+            CONF_EVENT_CUSTOM_LABEL,
+            CONF_EVENT_ICON,
+            CONF_EVENT_YEAR_UNKNOWN,
+        ):
+            if field in call_data:
+                updated[field] = call_data[field]
+
+        try:
+            event_data = build_event_data(updated, existing)
+        except EventValidationError as err:
+            raise HomeAssistantError(str(err)) from err
+
+        updated_name = event_data[CONF_EVENT_NAME]
+        if any(
+            index != event_index and event_names_match(event.get(CONF_EVENT_NAME, ""), updated_name)
+            for index, event in enumerate(events)
+        ):
+            raise HomeAssistantError(f"Life Events NG event already exists: {updated_name}")
+
+        events[event_index] = event_data
+        _save_events(entry, events)
+
+        _LOGGER.info("Updated Life Events NG event via service: %s", updated_name)
+
+    async def async_delete_event(call: ServiceCall) -> None:
+        """Delete a Life Events NG event from the configured entry."""
+        entry = _get_entry()
+        events = _get_events(entry)
+        event_name = call.data[CONF_EVENT_NAME]
+        event_index = _find_event_index(events, event_name)
+        deleted = events.pop(event_index)
+
+        _save_events(entry, events)
+
+        _LOGGER.info("Deleted Life Events NG event via service: %s", deleted.get(CONF_EVENT_NAME, event_name))
+
+    if not hass.services.has_service(DOMAIN, SERVICE_ADD_EVENT):
+        hass.services.async_register(
+            DOMAIN,
+            SERVICE_ADD_EVENT,
+            async_add_event,
+            schema=ADD_EVENT_SCHEMA,
+        )
+    if not hass.services.has_service(DOMAIN, SERVICE_UPDATE_EVENT):
+        hass.services.async_register(
+            DOMAIN,
+            SERVICE_UPDATE_EVENT,
+            async_update_event,
+            schema=UPDATE_EVENT_SCHEMA,
+        )
+    if not hass.services.has_service(DOMAIN, SERVICE_DELETE_EVENT):
+        hass.services.async_register(
+            DOMAIN,
+            SERVICE_DELETE_EVENT,
+            async_delete_event,
+            schema=DELETE_EVENT_SCHEMA,
+        )
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
