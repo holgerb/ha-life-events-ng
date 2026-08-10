@@ -46,3 +46,71 @@ add_event:
       required: false
       selector:
         boolean:
+
+update_event:
+  name: Update event
+  description: Update an existing Life Events NG event by name. Only provided fields are changed.
+  fields:
+    name:
+      name: Current name
+      description: Current person or event name to update.
+      required: true
+      example: Sarah
+      selector:
+        text:
+    new_name:
+      name: New name
+      description: Optional replacement name. Event names must remain unique.
+      required: false
+      example: Sarah Miller
+      selector:
+        text:
+    date:
+      name: Date
+      description: New date in YYYY-MM-DD when the year is known, or MM-DD when the year is unknown.
+      required: false
+      example: "1990-03-15"
+      selector:
+        text:
+    type:
+      name: Event type
+      description: New event type.
+      required: false
+      selector:
+        select:
+          options:
+            - birthday
+            - anniversary
+            - custom
+    custom_label:
+      name: Custom label
+      description: New label used when event type is custom.
+      required: false
+      example: Gotcha Day
+      selector:
+        text:
+    icon:
+      name: Icon
+      description: New optional MDI icon override.
+      required: false
+      example: mdi:cake-variant
+      selector:
+        icon:
+    year_unknown:
+      name: Year unknown
+      description: Use MM-DD format and hide age or anniversary year. If omitted with a new date, this is inferred from the date format.
+      required: false
+      selector:
+        boolean:
+
+delete_event:
+  name: Delete event
+  description: Delete an existing Life Events NG event by name.
+  fields:
+    name:
+      name: Name
+      description: Person or event name to delete.
+      required: true
+      example: Sarah
+      selector:
+        text:
