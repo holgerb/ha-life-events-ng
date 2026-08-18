@@ -13,7 +13,7 @@
 
 const EVENT_TYPE_ICONS = {
   birthday: "mdi:cake-variant",
-  anniversary: "mdi:ring",
+  anniversary: "mdi:calendar-star",
   custom: "mdi:calendar-star",
 };
 
