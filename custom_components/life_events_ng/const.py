@@ -16,7 +16,7 @@ EVENT_TYPES = [EVENT_TYPE_BIRTHDAY, EVENT_TYPE_ANNIVERSARY, EVENT_TYPE_CUSTOM]
 
 EVENT_TYPE_ICONS = {
     EVENT_TYPE_BIRTHDAY: "mdi:cake-variant",
-    EVENT_TYPE_ANNIVERSARY: "mdi:ring",
+    EVENT_TYPE_ANNIVERSARY: "mdi:calendar-star",
     EVENT_TYPE_CUSTOM: "mdi:calendar-star",
 }
 
