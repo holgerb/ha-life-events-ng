@@ -11,10 +11,10 @@
  *   show_past_days: 0              (optional, show events N days after they passed)
  */
 
-const EVENT_ICONS = {
-  birthday: "🎂",
-  anniversary: "💍",
-  custom: "⭐",
+const EVENT_TYPE_ICONS = {
+  birthday: "mdi:cake-variant",
+  anniversary: "mdi:ring",
+  custom: "mdi:calendar-star",
 };
 
 const EVENT_COLORS = {
@@ -45,7 +45,7 @@ class LifeEventsCard extends HTMLElement {
     const maxEvents = Number.parseInt(config.max_events, 10);
     const showPastDays = Number.parseInt(config.show_past_days, 10);
     const showTypes = Array.isArray(config.show_types)
-      ? config.show_types.filter((type) => Object.prototype.hasOwnProperty.call(EVENT_ICONS, type))
+      ? config.show_types.filter((type) => Object.prototype.hasOwnProperty.call(EVENT_TYPE_ICONS, type))
       : ["birthday", "anniversary", "custom"];
 
     this._config = {
@@ -69,7 +69,7 @@ class LifeEventsCard extends HTMLElement {
       const eventType = attrs.event_type;
 
       if (isNaN(daysUntil)) continue;
-      if (!Object.prototype.hasOwnProperty.call(EVENT_ICONS, eventType)) continue;
+      if (!Object.prototype.hasOwnProperty.call(EVENT_TYPE_ICONS, eventType)) continue;
       if (!attrs.next_date || !Object.prototype.hasOwnProperty.call(attrs, "original_date")) continue;
       if (!this._config.show_types.includes(eventType)) continue;
       if (daysUntil < -this._config.show_past_days) continue;
@@ -83,13 +83,20 @@ class LifeEventsCard extends HTMLElement {
         event_type: eventType,
         event_label: attrs.event_label || "Event",
         year_unknown: attrs.year_unknown || false,
-        icon: attrs.icon,
+        icon: this._iconForEvent(eventType, attrs.icon),
       });
     }
 
     return events
       .sort((a, b) => a.days_until - b.days_until)
       .slice(0, this._config.max_events);
+  }
+
+  _iconForEvent(eventType, icon) {
+    if (typeof icon === "string" && icon.startsWith("mdi:")) {
+      return icon;
+    }
+    return EVENT_TYPE_ICONS[eventType] || EVENT_TYPE_ICONS.custom;
   }
 
   _formatDate(dateStr) {
@@ -103,7 +110,7 @@ class LifeEventsCard extends HTMLElement {
   }
 
   _urgencyLabel(days) {
-    if (days === 0) return { label: "Today! 🎉", color: URGENCY_COLORS.today };
+    if (days === 0) return { label: "Today!", color: URGENCY_COLORS.today };
     if (days === 1) return { label: "Tomorrow", color: URGENCY_COLORS.soon };
     if (days <= 7) return { label: `In ${days} days`, color: URGENCY_COLORS.soon };
     return { label: `In ${days} days`, color: URGENCY_COLORS.upcoming };
@@ -193,7 +200,7 @@ class LifeEventsCard extends HTMLElement {
           padding-left: 13px;
         }
 
-        .event-emoji-wrap {
+        .event-icon-wrap {
           width: 44px;
           height: 44px;
           border-radius: 12px;
@@ -202,6 +209,10 @@ class LifeEventsCard extends HTMLElement {
           justify-content: center;
           font-size: 1.5rem;
           flex-shrink: 0;
+        }
+
+        .event-icon-wrap ha-icon {
+          --mdc-icon-size: 24px;
         }
 
         .event-info {
@@ -263,9 +274,10 @@ class LifeEventsCard extends HTMLElement {
         }
 
         .empty-icon {
-          font-size: 2.5rem;
+          --mdc-icon-size: 40px;
           margin-bottom: 8px;
           display: block;
+          color: var(--secondary-text-color);
         }
       </style>
 
@@ -278,7 +290,7 @@ class LifeEventsCard extends HTMLElement {
         ${
           events.length === 0
             ? `<div class="empty">
-                <span class="empty-icon">🗓️</span>
+                <ha-icon class="empty-icon" icon="mdi:calendar-blank"></ha-icon>
                 No upcoming events.<br>Add events via the integration settings.
                </div>`
             : `<ul class="event-list">
@@ -292,9 +304,9 @@ class LifeEventsCard extends HTMLElement {
   _renderEvent(ev) {
     const { label: urgencyLabel, color: urgencyColor } = this._urgencyLabel(ev.days_until);
     const typeColor = EVENT_COLORS[ev.event_type] || EVENT_COLORS.custom;
-    const emoji = EVENT_ICONS[ev.event_type] || "⭐";
     const yearsLabel = this._yearsLabel(ev);
     const dateFormatted = this._formatDate(ev.next_date);
+    const safeIcon = this._escapeHtml(ev.icon);
     const safeUrgencyLabel = this._escapeHtml(urgencyLabel);
     const safeDateFormatted = this._escapeHtml(dateFormatted);
 
@@ -304,8 +316,8 @@ class LifeEventsCard extends HTMLElement {
 
     return `
       <li class="${itemClass}">
-        <div class="event-emoji-wrap" style="background: ${typeColor}18;">
-          ${emoji}
+        <div class="event-icon-wrap" style="background: ${typeColor}18; color: ${typeColor};">
+          <ha-icon icon="${safeIcon}"></ha-icon>
         </div>
         <div class="event-info">
           <div class="event-name">${this._escapeHtml(ev.name)}</div>
