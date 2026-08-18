@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0](https://github.com/holgerb/ha-life-events-ng/compare/v0.2.0...v0.3.0) (2026-08-18)
+
+
+### Features
+
+* Render Life Events card icons with MDI ([#10](https://github.com/holgerb/ha-life-events-ng/issues/10)) ([740b43c](https://github.com/holgerb/ha-life-events-ng/commit/740b43cca557601c7244c127755a1c086ece09ac))
+
 ## [0.2.0](https://github.com/holgerb/ha-life-events-ng/compare/v0.1.0...v0.2.0) (2026-08-10)
 
 
